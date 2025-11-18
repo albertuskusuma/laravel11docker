@@ -1,0 +1,41 @@
+name: Deploy Laravel to VPS
+
+on:
+  push:
+    branches:
+      - main   # atau branch lain yang kamu pakai
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Login ke GitHub Container Registry (GHCR)
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} --password-stdin
+
+      - name: Build Docker image
+        run: docker build -t ghcr.io/${{ secrets.GHCR_USERNAME }}/laravel11docker-app:latest .
+
+      - name: Push Docker image ke GHCR
+        run: docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/laravel11docker-app:latest
+
+      - name: Deploy ke VPS via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}            # kalau VPS pakai port SSH custom
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/laravel11docker   # folder di VPS di mana kamu kloning repo
+            docker compose pull
+            docker compose down
+            docker compose up -d --build
