@@ -12,6 +12,22 @@ services:
     networks:
       - laravel-net
 
+  mysql:
+    image: mysql:8.0
+    container_name: laravel_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lrv11_biodata_app
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - laravel-net
+      
   nginx:
     image: nginx:latest
     container_name: laravel_nginx
