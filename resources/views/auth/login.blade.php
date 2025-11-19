@@ -24,7 +24,7 @@
                     <div class="card-body p-5">
                         <!-- Login Form -->
                         <div class="text-center mb-4">
-                            <h1 class="h4 text-gray-900 mb-2">Selamat Datang Bro 👋</h1>
+                            <h1 class="h4 text-gray-900 mb-2">Selamat Datang K👋</h1>
                             <p class="mb-4">Silakan login untuk melanjutkan</p>
                         </div>
 
