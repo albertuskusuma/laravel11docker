@@ -1,4 +1,3 @@
-#rename file
 # Dockerfile untuk Laravel 11
 FROM php:8.2-fpm
 
@@ -9,26 +8,24 @@ RUN apt-get update && apt-get install -y \
 # Install extension PHP
 RUN docker-php-ext-install pdo pdo_mysql mbstring bcmath xml
 
-# Copy composer dari image composer
+# Copy composer dari image resmi
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# Copy semua kode Laravel ke dalam container
+# Copy kode Laravel ke dalam container
 COPY . .
 
-# Install dependensi PHP Laravel
+# Install dependency PHP
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Buat file .env dari contoh
+# Copy env template
 RUN cp .env.example .env
 
-# Generate APP_KEY Laravel
+# Generate APP_KEY
 RUN php artisan key:generate
 
-# Setting permission bisa jika perlu (tergantung server)
-# RUN chown -R www-data:www-data /var/www
-
+# Permission untuk Laravel
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 CMD ["php-fpm"]
