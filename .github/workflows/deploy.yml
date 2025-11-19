@@ -36,6 +36,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /var/www/laravel11docker   # folder di VPS di mana kamu kloning repo
+            git pull origin main
             docker compose pull
             docker compose down
             docker compose up -d --build
