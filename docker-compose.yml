@@ -4,11 +4,10 @@ services:
   app:
     build:
       context: .
-    image: laravel11docker-app:latest
     container_name: laravel_app
     restart: always
     volumes:
-      - ./src:/var/www/laravel11docker   # hanya folder code, aman
+      - ./:/var/www
     networks:
       - laravel-net
 
@@ -33,12 +32,10 @@ services:
     container_name: laravel_nginx
     restart: always
     ports:
-      - "8080:80"
+      - "8080:80"   # PORT TETAP 8080
     volumes:
-      - ./src:/var/www/laravel11docker          # folder Laravel
+      - ./:/var/www
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - app
     networks:
       - laravel-net
 
