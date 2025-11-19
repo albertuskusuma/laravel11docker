@@ -29,4 +29,6 @@ RUN php artisan key:generate
 # Setting permission bisa jika perlu (tergantung server)
 # RUN chown -R www-data:www-data /var/www
 
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+
 CMD ["php-fpm"]

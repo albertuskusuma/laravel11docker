@@ -7,8 +7,6 @@ services:
     image: albertuskusuma/laravel11docker-app:latest
     container_name: laravel_app
     restart: always
-    volumes:
-      - ./:/var/www
     networks:
       - laravel-net
 
@@ -35,8 +33,9 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./:/var/www
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
     networks:
       - laravel-net
 
