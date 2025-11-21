@@ -37,7 +37,9 @@ jobs:
           script: |
             cd /var/www/laravel11docker   # folder di VPS di mana kamu kloning repo
             git fetch --all
-            git pull origin main
+            # Mengambil update dari repo
+            # git pull origin main
+            git reset --hard origin/main  # reset server ke versi repo, hapus perubahan lokal
             docker compose pull
             docker compose down
             docker compose up -d --build
